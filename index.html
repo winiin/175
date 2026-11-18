@@ -14,6 +14,18 @@
 /* GAME MODE */
 .game-hud{background:#fff;border-bottom:1px solid var(--line)}.hud-inner{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:18px;align-items:center;padding-top:17px;padding-bottom:17px}.player{display:flex;align-items:center;gap:12px}.avatar{width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,#d9fff6,#dce3ff);display:grid;place-items:center;font-size:22px}.player strong{display:block;font-size:13px}.player small{color:var(--muted);font-size:11px}.hud-stat{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px}.hud-stat b{font-size:15px}.xp-track{height:7px;background:#edf0f7;border-radius:9px;overflow:hidden;margin-top:7px}.xp-track span{height:100%;display:block;background:linear-gradient(90deg,#526df0,#72d8d0);width:0;transition:.3s}.game-panel{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;margin-bottom:25px;box-shadow:0 8px 25px rgba(20,40,80,.04)}.game-panel-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:15px}.game-panel h3{margin:0;font-size:17px}.quest-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.quest{background:#f7f8fc;border:1px solid var(--line);border-radius:13px;padding:13px;font-size:12px;color:#66738d}.quest b{display:block;color:var(--ink);font-size:13px;margin:5px 0}.quest.done{background:#edfaf3;border-color:#b9e6ce}.quest-icon{font-size:19px}.game-badge{font-size:11px;background:#edf1ff;color:#4562dc;border-radius:30px;padding:7px 10px;font-weight:800}.lesson.completed{border-color:#75cba3;background:#f5fff9}.lesson.completed .lesson-icon{background:#e0f8eb}.lesson-progress{font-size:11px;color:#279568;font-weight:800;margin-top:12px}.reward-pop{color:#249568;font-weight:800;font-size:13px;margin-top:10px}.modal-complete{margin-top:20px;border:0;border-radius:11px;padding:12px 16px;background:#e5f8ed;color:#18794e;font-weight:800}.modal-complete:disabled{opacity:.6}.game-result{background:#f3f6ff;border:1px solid #dce4ff;padding:16px;border-radius:14px;margin-top:14px;font-size:14px;line-height:1.7}.streak{color:#d17b27}
 @media(max-width:760px){.hud-inner{grid-template-columns:1fr 1fr}.player{grid-column:1/-1}.quest-list{grid-template-columns:1fr}.game-panel{padding:17px}}
+
+.adventure{background:linear-gradient(180deg,#eef3ff,#f7f9ff)}
+.world-board{display:grid;grid-template-columns:.85fr 1.15fr;gap:16px}
+.world-scene{min-height:340px;border-radius:22px;padding:24px;background:linear-gradient(180deg,#b9e8f3 0%,#d8f2e8 68%,#9acb9c 68%);position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between}
+.world-sky{font-size:23px;color:#fff}.world-character{font-size:90px;text-align:center;filter:drop-shadow(0 10px 8px #527c5c55);animation:floatHero 2.5s ease-in-out infinite}
+@keyframes floatHero{50%{transform:translateY(-9px)}}
+.world-ground{text-align:center;font-size:24px;color:#4e9564}.world-caption{background:#ffffffdc;border:1px solid #ffffff;border-radius:14px;padding:13px;display:grid;gap:4px}.world-caption span{font-size:12px;color:#61718a}
+.world-levels{display:grid;gap:12px}.world-gate{border:1px solid #dfe5f0;border-radius:17px;background:#fff;padding:17px;display:grid;grid-template-columns:48px 1fr;grid-template-rows:auto auto auto;column-gap:12px;text-align:left;align-items:center;color:var(--ink);transition:.2s}.world-gate:not(.locked):hover{transform:translateX(4px);border-color:#8799f2;box-shadow:var(--shadow)}.world-gate>span{grid-row:1/4;font-size:30px}.world-gate b{font-size:14px}.world-gate small{color:var(--muted);margin-top:4px}.world-gate em{font-size:11px;color:#4261d9;font-style:normal;font-weight:800;margin-top:7px}.world-gate.locked{opacity:.55;cursor:not-allowed;background:#f6f7fa}
+.adventure-tip{font-size:12px;color:#71809b;margin-top:15px}
+.battle-card{text-align:center}.battle-monster{font-size:65px;margin:8px}.battle-question{font-size:19px;font-weight:800;line-height:1.45;margin:16px 0}.battle-answers{display:grid;grid-template-columns:1fr 1fr;gap:10px}.battle-answer{border:1px solid var(--line);background:#fff;border-radius:12px;padding:13px;text-align:left;font-weight:650;color:var(--ink)}.battle-answer:hover{border-color:#8295f0;background:#f7f8ff}.battle-answer.correct{background:#edfaf3;border-color:#62bd8b}.battle-answer.wrong{background:#fff1f1;border-color:#dc8585}.battle-feedback{min-height:38px;margin:12px 0;color:#63718b;font-size:13px;line-height:1.5}
+@media(max-width:760px){.world-board{grid-template-columns:1fr}.world-scene{min-height:280px}.battle-answers{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -22,11 +34,42 @@
 <nav class="navlinks"><a href="#lessons">Сабақтар</a><a href="#practice">Тест</a><a href="#vocabulary">Сөздік</a></nav>
 <button class="nav-cta" onclick="document.querySelector('#practice').scrollIntoView({behavior:'smooth'})">Білімімді тексеру ↗</button>
 </div></header>
+
+<section class="game-hud" aria-label="Ойын көрсеткіштері"><div class="shell hud-inner">
+  <div class="player"><div class="avatar">🧙‍♀️</div><div><strong>Тіл сақшысы</strong><small id="rankName">1-деңгей · Бастаушы</small></div></div>
+  <div><div class="hud-stat"><span>⭐ Тәжірибе</span><b id="xpValue">0 XP</b></div><div class="xp-track"><span id="xpBar"></span></div></div>
+  <div class="hud-stat"><span>🪙 <b id="coinValue">0</b> монета</span><span class="streak">🔥 <b id="streakValue">0</b> күн</span></div>
+</div></section>
 <main>
 <section class="hero"><div class="shell hero-inner">
 <div><div class="eyebrow">Тілді таны · Ойды дамыт</div><h1>Қазақ тілін<br><span>жаңа қырынан</span><br>үйрен.</h1><p>Грамматика, қызықты тапсырмалар және шағын тесттер — барлығы бір жерде. Білімді күн сайын аз-аздан жетілдір.</p><div class="hero-actions"><button class="primary" onclick="document.querySelector('#lessons').scrollIntoView({behavior:'smooth'})">Сабақтарды бастау →</button><button class="secondary" onclick="document.querySelector('#vocabulary').scrollIntoView({behavior:'smooth'})">Сөздікке өту</button></div></div>
 <div class="hero-card"><div class="card-top"><span>БҮГІНГІ ОЙ</span><span>№ 01 / 175</span></div><div class="hero-letter">Аа</div><h3>Сөз — ойдың кілті.</h3><p>Тіл байлығы — білім мен мәдениеттің айнасы.</p><div class="mini-stats"><div><strong>03</strong><span>оқу бөлімі</span></div><div><strong>10+</strong><span>тест сұрағы</span></div><div><strong>∞</strong><span>мүмкіндік</span></div></div></div>
 </div></section>
+
+<section class="section adventure" id="adventure"><div class="shell">
+ <div class="section-head"><div><div class="tag">Интерактивті ойын · Қазақ тілі әлемі</div><h2>Тіл әлемін құтқар!</h2><p>Кейіпкеріңмен үш аймақтан өт. Әр қақпада грамматикалық тапсырманы шешіп, келесі деңгейдің құлпын аш.</p></div><span class="game-badge">🗺️ ШЫтырман оқиға</span></div>
+ <div class="game-panel"><div class="game-panel-head"><h3>🎯 Бүгінгі миссиялар</h3><span class="game-badge">Сыйлық: XP + монета</span></div>
+  <div class="quest-list">
+   <div class="quest" id="questLesson"><span class="quest-icon">📚</span><b>Білім жинаушы</b>Кемінде бір сабақты аяқта · +20 XP</div>
+   <div class="quest" id="questQuiz"><span class="quest-icon">📝</span><b>Сынақтан өт</b>Бүгінгі тестті аяқта · +XP</div>
+   <div class="quest" id="questWords"><span class="quest-icon">🔎</span><b>Сөз зерттеуші</b>Сөздіктен сөз ізде · +5 XP</div>
+  </div>
+ </div>
+ <div class="world-board">
+  <div class="world-scene"><div class="world-sky">☁️　　　　　　　　　☁️</div><div class="world-character" id="worldCharacter">🧙‍♀️</div><div class="world-ground">✦　🌿　✦　🌼　✦　🌿　✦</div><div class="world-caption"><b>Сен — Тіл сақшысысың</b><span>Білім кристалдарын жинап, Қате айдаһарын жең!</span></div></div>
+  <div class="world-levels">
+   <button class="world-gate" id="gate0" onclick="startAdventure(0)"><span>🌳</span><b>1. Сөз орманы</b><small>Сөз таптары · Бастапқы деңгей</small><em id="gateStatus0">▶ Ойнау</em></button>
+   <button class="world-gate locked" id="gate1" onclick="startAdventure(1)"><span>🏰</span><b>2. Сөйлем қамалы</b><small>Сөйлем мүшелері · Орта деңгей</small><em id="gateStatus1">🔒 Құлыптаулы</em></button>
+   <button class="world-gate locked" id="gate2" onclick="startAdventure(2)"><span>🐉</span><b>3. Грамматика айдаһары</b><small>Қорытынды шайқас · Босс</small><em id="gateStatus2">🔒 Құлыптаулы</em></button>
+  </div>
+ </div>
+ <div class="adventure-tip">💡 Кеңес: дұрыс жауап берген сайын тәжірибе мен монета аласың. Прогресс осы құрылғыда сақталады.</div>
+</div></section>
+<div class="modal" id="battleModal" role="dialog" aria-modal="true" aria-labelledby="battleTitle"><div class="modal-card battle-card">
+ <button class="close" onclick="closeBattle()" aria-label="Жабу">×</button><div class="tag" id="battleTag">ГРАММАТИКАЛЫҚ ШАЙҚАС</div><h2 id="battleTitle">Сөз орманы</h2>
+ <div class="battle-monster" id="battleMonster">👾</div><div class="battle-question" id="battleQuestion"></div><div class="battle-answers" id="battleAnswers"></div><div class="battle-feedback" id="battleFeedback" aria-live="polite"></div>
+ <button class="next" id="battleContinue" onclick="continueAdventure()" disabled>Жалғастыру →</button>
+</div></div>
 <section class="section" id="lessons"><div class="shell">
 <div class="section-head"><div><div class="tag">Ойын картасы · 1-аймақ</div><h2>Білім әлеміне қадам</h2><p>Тақырыпты таңда да, негізгі ережелермен таныс.</p></div></div>
 <div class="grid">
@@ -47,8 +90,56 @@
 <div class="modal" id="lessonModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" onclick="if(event.target===this)closeLesson()"><div class="modal-card"><button class="close" onclick="closeLesson()" aria-label="Жабу">×</button><div class="tag">Қысқаша сабақ · миссия</div><h2 id="modalTitle"></h2><div id="modalBody"></div><button class="modal-complete" id="completeLesson" onclick="completeCurrentLesson()">✓ Сабақты аяқтау · +20 XP</button></div></div>
 <script>
 
+
+const adventureChallenges=[
+ {title:'Сөз орманы',tag:'1-АЙМАҚ · СӨЗ ТАПТАРЫ',monster:'🌱',q:'«Жылдам» сөзі қай сөз табына жатады?',a:['Зат есім','Сын есім','Үстеу','Етістік'],correct:2,why:'«Жылдам» қимылдың амалын білдіріп, қалай? деген сұраққа жауап бере алады. Бұл — үстеу.'},
+ {title:'Сөйлем қамалы',tag:'2-АЙМАҚ · СИНТАКСИС',monster:'🛡️',q:'«Айдана кітап оқыды» сөйлеміндегі баяндауышты тап.',a:['Айдана','Кітап','Оқыды','Сөйлем'],correct:2,why:'Не істеді? — оқыды. Бұл сөйлемнің баяндауышы.'},
+ {title:'Грамматика айдаһары',tag:'СОҢҒЫ БОСС · ҚОРЫТЫНДЫ',monster:'🐉',q:'«Достық» сөзіндегі -тық бөлігі қалай аталады?',a:['Түбір','Жұрнақ','Жалғау','Буын'],correct:1,why:'-тық жаңа сөз жасап тұр, сондықтан бұл — жұрнақ.'}
+];
+let activeAdventure=0,adventureAnswered=false;
+function renderAdventure(){
+ const done=Number(gameState.adventureLevel||0);
+ for(let i=0;i<3;i++){
+  const gate=document.getElementById('gate'+i),status=document.getElementById('gateStatus'+i);
+  if(!gate||!status)continue;
+  const unlocked=i<=done;gate.classList.toggle('locked',!unlocked);gate.disabled=!unlocked;
+  status.textContent=i<done?'✓ Өтілді':i===done?'▶ Ойнау':'🔒 Құлыптаулы';
+ }
+ const hero=document.getElementById('worldCharacter');if(hero)hero.textContent=done>=3?'👑':done===2?'🧙‍♀️':done===1?'🧝‍♀️':'🧙‍♀️';
+}
+function startAdventure(level){
+ if(level>Number(gameState.adventureLevel||0))return;
+ activeAdventure=level;adventureAnswered=false;
+ const c=adventureChallenges[level];
+ document.getElementById('battleTag').textContent=c.tag;document.getElementById('battleTitle').textContent=c.title;
+ document.getElementById('battleMonster').textContent=c.monster;document.getElementById('battleQuestion').textContent=c.q;
+ document.getElementById('battleFeedback').textContent='Таңдауыңды жаса!';
+ const btn=document.getElementById('battleContinue');btn.disabled=true;btn.textContent='Жалғастыру →';
+ const box=document.getElementById('battleAnswers');box.innerHTML='';
+ c.a.forEach((answer,i)=>{const b=document.createElement('button');b.className='battle-answer';b.textContent=String.fromCharCode(65+i)+'. '+answer;b.onclick=()=>answerAdventure(i);box.appendChild(b)});
+ document.getElementById('battleModal').classList.add('show');document.body.style.overflow='hidden';
+}
+function answerAdventure(choice){
+ if(adventureAnswered)return;adventureAnswered=true;
+ const c=adventureChallenges[activeAdventure],buttons=[...document.querySelectorAll('.battle-answer')];
+ buttons.forEach((b,i)=>{b.disabled=true;if(i===c.correct)b.classList.add('correct');if(i===choice&&i!==c.correct)b.classList.add('wrong')});
+ const feedback=document.getElementById('battleFeedback'),next=document.getElementById('battleContinue');
+ if(choice===c.correct){
+  feedback.textContent='✨ Дұрыс! '+c.why+' +25 XP және +10 монета.';
+  if(Number(gameState.adventureLevel||0)===activeAdventure){gameState.adventureLevel=activeAdventure+1;dailyStreak();addReward(25,10)}
+  renderAdventure();next.disabled=false;next.textContent=activeAdventure===2?'Жеңісті көру →':'Келесі аймақ →';
+ }else{feedback.textContent='Әлі емес! Дұрыс жауап: '+c.a[c.correct]+'. '+c.why+' Қайта байқап көр.';next.disabled=false;next.textContent='Қайта әрекет ету';}
+}
+function continueAdventure(){
+ const done=Number(gameState.adventureLevel||0);
+ if(done>activeAdventure){closeBattle();if(done<3)startAdventure(done);else{document.getElementById('worldCharacter').textContent='👑';alert('Құттықтаймыз! Сен Тіл әлемінің чемпионы атандың!');}}
+ else{closeBattle();startAdventure(activeAdventure);}
+}
+function closeBattle(){document.getElementById('battleModal').classList.remove('show');document.body.style.overflow='';}
+
 const GAME_KEY='175-kazakh-game-v1';
 const gameState=(()=>{try{return JSON.parse(localStorage.getItem(GAME_KEY))||{xp:0,coins:0,lessons:[],quizDays:[],wordDays:[],streak:0,lastDay:''}}catch(e){return {xp:0,coins:0,lessons:[],quizDays:[],wordDays:[],streak:0,lastDay:''}}})();
+if(!Array.isArray(gameState.lessons))gameState.lessons=[];if(!Array.isArray(gameState.quizDays))gameState.quizDays=[];if(!Array.isArray(gameState.wordDays))gameState.wordDays=[];if(!Number.isFinite(gameState.adventureLevel))gameState.adventureLevel=0;
 const todayKey=()=>new Date().toLocaleDateString('en-CA');
 function saveGame(){localStorage.setItem(GAME_KEY,JSON.stringify(gameState));renderGame()}
 function addReward(xp,coins){gameState.xp+=xp;gameState.coins+=coins;saveGame()}
@@ -62,6 +153,7 @@ function renderGame(){
  document.getElementById('questLesson').classList.toggle('done',gameState.lessons.length>0);
  document.getElementById('questQuiz').classList.toggle('done',gameState.quizDays.includes(todayKey()));
  document.getElementById('questWords').classList.toggle('done',gameState.wordDays.includes(todayKey()));
+ renderAdventure();
  document.querySelectorAll('.lesson').forEach((el,i)=>{const id=['parts','sentence','phonetics','morph','punct','idiom'][i];el.classList.toggle('completed',gameState.lessons.includes(id));let p=el.querySelector('.lesson-progress');if(gameState.lessons.includes(id)){if(!p){p=document.createElement('div');p.className='lesson-progress';el.append(p)}p.textContent='✓ Орындалды'}else if(p)p.remove()});
 }
 function dailyStreak(){const today=todayKey();if(gameState.lastDay!==today){const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);const y=yesterday.toLocaleDateString('en-CA');gameState.streak=gameState.lastDay===y?gameState.streak+1:1;gameState.lastDay=today}}
@@ -101,7 +193,7 @@ function nextQuestion(){if(qi<questions.length-1){qi++;renderQuestion()}else{con
 function restartQuiz(){qi=0;score=0;document.getElementById('next').onclick=nextQuestion;renderQuestion()}
 const words=[['Парасат','Ақылдылық, терең ой және дұрыс пайым.'],['Ынтымақ','Бірлік, татулық, ауызбіршілік.'],['Кемел','Жетілген, толыққанды, мінсізге жақын.'],['Зерделі','Зейінді, ұғымтал, ойлы.'],['Мұра','Ұрпаққа қалатын рухани немесе материалдық құндылық.'],['Қастерлеу','Құрметтеу, қадірін білу.'],['Ұлағат','Өнеге, тәрбиелік мәні бар ақыл.'],['Дарын','Туа біткен қабілет, ерекше бейімділік.'],['Ізденіс','Жаңаны табуға, білуге бағытталған әрекет.'],['Тұжырым','Ой қорытындысы, нақты пікір.']];
 function renderWords(filter=''){const list=document.getElementById('vocabList');list.innerHTML='';const found=words.filter(w=>(w[0]+' '+w[1]).toLocaleLowerCase('kk').includes(filter.toLocaleLowerCase('kk')));if(!found.length){list.innerHTML='<div class="empty">Сәйкес сөз табылмады.</div>';return}found.forEach(w=>{const el=document.createElement('div');el.className='vocab-item';const row=document.createElement('div');row.className='word';const strong=document.createElement('strong');strong.textContent=w[0];const span=document.createElement('span');span.textContent=w[1];row.append(strong,span);el.append(row);list.append(el)})}
-document.getElementById('searchWord').addEventListener('input',e=>{renderWords(e.target.value);if(e.target.value.trim().length>0&&!gameState.wordDays.includes(todayKey())){gameState.wordDays.push(todayKey());dailyStreak();addReward(5,2)}});renderWords();renderQuestion();renderGame();
+document.getElementById('searchWord').addEventListener('input',e=>{renderWords(e.target.value);if(e.target.value.trim().length>0&&!gameState.wordDays.includes(todayKey())){gameState.wordDays.push(todayKey());dailyStreak();addReward(5,2)}});renderWords();renderQuestion();renderGame();renderAdventure();
 </script>
 </body>
 </html>
