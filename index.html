@@ -163,7 +163,7 @@ punct:{title:'Тыныс белгісі',tag:'✒️ ПУНКТУАЦИЯ',q:[
 ['«Ол сұрады__ Сен дайынсың ба?»',['Қос нүкте','Үтір','Нүкте'],0,'Төл сөздің алдында қос нүкте қойылады.']]}
 };
 let miniMode='',miniIndex=0,miniScore=0,miniDone=false,miniPicked=[];
-const miniAnagrams=[['АПТАКІ','КІТАП'],['ПМЕКЕТ','МЕКТЕП'],['ІЛБІМ','БІЛІМ'],['ТЫҚДОС','ДОСТЫҚ'],['НЕРӨ','ӨНЕР']];
+const miniAnagrams=[['ПТІКА','КІТАП'],['ПМЕКЕТ','МЕКТЕП'],['ІЛБІМ','БІЛІМ'],['ТЫҚДОС','ДОСТЫҚ'],['НЕРӨ','ӨНЕР']];
 const miniPairs=[['Парасат','Ақылдылық'],['Ынтымақ','Бірлік'],['Дарын','Қабілет'],['Мұра','Құндылық']];
 const miniSentences=[['Оқушы','кітап','оқыды.'],['Біз','қазақ','тілін','үйренеміз.'],['Білім','адамды','биікке','жетелейді.'],['Достарым','саябаққа','бірге','барды.']];
 function launchMiniGame(mode){miniMode=mode;miniIndex=0;miniScore=0;miniDone=false;document.getElementById('miniGameTitle').textContent=arcadeSets[mode]?.title||({anagram:'Әріптерді жина',match:'Жұбын тап',sentence:'Сөйлем құра'}[mode]);document.getElementById('miniGameTag').textContent=arcadeSets[mode]?.tag||'🧩 СӨЗ ОЙЫНЫ';document.getElementById('miniGameModal').classList.add('show');document.body.style.overflow='hidden';renderMiniGame()}
