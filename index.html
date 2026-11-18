@@ -141,6 +141,47 @@ function continueAdventure(){
 }
 function closeBattle(){document.getElementById('battleModal').classList.remove('show');document.body.style.overflow='';}
 
+
+const arcadeSets={
+quick:{title:'Жылдам жауап',tag:'⚡ ШАПШАҢДЫҚ',q:[
+['«Қалам» қай сөз табы?',['Зат есім','Етістік','Үстеу'],0,'Қалам — заттың атауы.'],
+['«Жүгірді» қай сөз табы?',['Сын есім','Етістік','Сан есім'],1,'Жүгірді — қимылды білдіреді.'],
+['«Үшінші» қандай сан есім?',['Реттік','Есептік','Жинақтық'],0,'Үшінші — реттік сан есім.'],
+['Сұраулы сөйлем соңына не қойылады?',['Нүкте','Сұрау белгісі','Үтір'],1,'Сұраулы сөйлем сұрау белгісімен аяқталады.'],
+['«Кеше» қай сөз табы?',['Үстеу','Зат есім','Есімдік'],0,'Кеше — мезгіл үстеуі.']]},
+detective:{title:'Тіл детективі',tag:'🕵️ ҚАТЕНІ ТАП',q:[
+['Қай сөз дұрыс жазылған?',['Кітапхана','Кітапқана','Кітапқона'],0,'Дұрыс нұсқа — кітапхана.'],
+['Қай сөйлем дұрыс?',['Мен мектепке бардым.','Мен мектеп бардым.','Мен мектепке барды.'],0,'Бастауыш пен баяндауыш жақ жағынан үйлеседі.'],
+['Қай сөзде қате жоқ?',['Өнерпаз','Өнер бас','Өнер-паз'],0,'Өнерпаз бірге жазылады.'],
+['Қайсысы дұрыс тыныс белгісімен аяқталған?',['Бүгін күн жылы.','Бүгін күн жылы?','Бүгін күн жылы,'],0,'Хабарлы сөйлемге нүкте қойылады.'],
+['Қайсысы тұрақты тіркес?',['Қас пен көздің арасында','Қас пен көз','Көздің түсі'],0,'Бұл тіркес «лезде» деген мағына береді.']]},
+punct:{title:'Тыныс белгісі',tag:'✒️ ПУНКТУАЦИЯ',q:[
+['«Сен бүгін келесің бе__»',['.','?','!'],1,'Сұраулы сөйлемге сұрау белгісі қойылады.'],
+['«Алақай__ Біз жеңдік!»',['Үтір','Нүкте','Сұрау белгісі'],0,'Одағайдан кейін үтір қойылады.'],
+['«Мен алма__ алмұрт және өрік алдым»',['Үтір','Нүкте','Қос нүкте'],0,'Бірыңғай мүшелер арасына үтір қойылады.'],
+['«Білім — күш__»',['Үтір','Нүкте','Сұрау белгісі'],1,'Аяқталған хабарлы сөйлемге нүкте қойылады.'],
+['«Ол сұрады__ Сен дайынсың ба?»',['Қос нүкте','Үтір','Нүкте'],0,'Төл сөздің алдында қос нүкте қойылады.']]}
+};
+let miniMode='',miniIndex=0,miniScore=0,miniDone=false,miniPicked=[];
+const miniAnagrams=[['АПТАКІ','КІТАП'],['ПМЕКЕТ','МЕКТЕП'],['ІЛБІМ','БІЛІМ'],['ТЫҚДОС','ДОСТЫҚ'],['НЕРӨ','ӨНЕР']];
+const miniPairs=[['Парасат','Ақылдылық'],['Ынтымақ','Бірлік'],['Дарын','Қабілет'],['Мұра','Құндылық']];
+const miniSentences=[['Оқушы','кітап','оқыды.'],['Біз','қазақ','тілін','үйренеміз.'],['Білім','адамды','биікке','жетелейді.'],['Достарым','саябаққа','бірге','барды.']];
+function launchMiniGame(mode){miniMode=mode;miniIndex=0;miniScore=0;miniDone=false;document.getElementById('miniGameTitle').textContent=arcadeSets[mode]?.title||({anagram:'Әріптерді жина',match:'Жұбын тап',sentence:'Сөйлем құра'}[mode]);document.getElementById('miniGameTag').textContent=arcadeSets[mode]?.tag||'🧩 СӨЗ ОЙЫНЫ';document.getElementById('miniGameModal').classList.add('show');document.body.style.overflow='hidden';renderMiniGame()}
+function miniTotal(){return miniMode==='anagram'?5:miniMode==='match'?4:miniMode==='sentence'?4:5}
+function renderMiniGame(){
+ miniDone=false;miniPicked=[];const box=document.getElementById('miniGameContent'),actions=document.getElementById('miniGameActions');actions.innerHTML='';document.getElementById('miniGameFeedback').textContent='';document.getElementById('miniGameCount').textContent=(miniIndex+1)+' / '+miniTotal()+' ТАПСЫРМА';document.getElementById('miniGameProgress').style.width=(miniIndex/miniTotal()*100)+'%';
+ if(arcadeSets[miniMode]){const q=arcadeSets[miniMode].q[miniIndex];box.innerHTML='<div class="mini-prompt"></div><div class="mini-game-options"></div>';box.querySelector('.mini-prompt').textContent=q[0];q[1].forEach((v,i)=>{const b=document.createElement('button');b.className='mini-option';b.textContent=v;b.onclick=()=>answerMiniChoice(i);box.querySelector('.mini-game-options').append(b)})}
+ else if(miniMode==='anagram')renderAnagram(box);else if(miniMode==='match')renderMatch(box);else renderSentence(box);
+}
+function answerMiniChoice(i){if(miniDone)return;miniDone=true;const q=arcadeSets[miniMode].q[miniIndex];document.querySelectorAll('.mini-option').forEach((b,n)=>{b.disabled=true;if(n===q[2])b.classList.add('good');if(n===i&&i!==q[2])b.classList.add('bad')});if(i===q[2])miniScore++;document.getElementById('miniGameFeedback').textContent=(i===q[2]?'Дұрыс! ':'Дұрыс жауап: '+q[1][q[2]]+'. ')+q[3];showMiniNext()}
+function renderAnagram(box){const item=miniAnagrams[miniIndex],letters=item[0].split('').sort(()=>Math.random()-.5);box.innerHTML='<div class="mini-prompt">Әріптерден сөз құрастыр: <b>'+letters.join(' · ')+'</b></div><input class="mini-input" id="anagramInput" placeholder="Жауабыңды жаз..." autocomplete="off">';const b=document.createElement('button');b.className='next';b.textContent='Тексеру';b.onclick=()=>{if(miniDone)return;miniDone=true;const answer=document.getElementById('anagramInput').value.trim().toLocaleUpperCase('kk');if(answer===item[1]){miniScore++;document.getElementById('miniGameFeedback').textContent='Тамаша! Дұрыс сөз.'}else document.getElementById('miniGameFeedback').textContent='Дұрыс жауап: '+item[1];showMiniNext()};box.append(b)}
+function renderMatch(box){const cards=miniPairs.flatMap((p,i)=>[{text:p[0],pair:i,type:0},{text:p[1],pair:i,type:1}]).sort(()=>Math.random()-.5);box.innerHTML='<div class="mini-prompt">Сөзді оның мағынасымен жұптастыр.</div><div class="mini-game-options" id="matchGrid"></div>';cards.forEach(c=>{const b=document.createElement('button');b.className='mini-tile';b.textContent=c.text;b.dataset.pair=c.pair;b.dataset.type=c.type;b.onclick=()=>selectMatch(b);document.getElementById('matchGrid').append(b)})}
+function selectMatch(b){if(b.disabled)return;b.classList.add('selected');miniPicked.push(b);if(miniPicked.length===2){const a=miniPicked[0],c=miniPicked[1];if(a.dataset.pair===c.dataset.pair&&a.dataset.type!==c.dataset.type){a.disabled=c.disabled=true;a.classList.add('good');c.classList.add('good');miniScore++;document.getElementById('miniGameFeedback').textContent='Дұрыс жұп!'}else{a.classList.remove('selected');c.classList.remove('selected');document.getElementById('miniGameFeedback').textContent='Сәйкес емес. Қайта байқап көр.'}miniPicked=[];if(document.querySelectorAll('#matchGrid button:disabled').length===8){miniDone=true;showMiniNext()}}}
+function renderSentence(box){const target=miniSentences[miniIndex],mixed=target.slice().sort(()=>Math.random()-.5);miniPicked=[];box.innerHTML='<div class="mini-prompt">Сөздерді дұрыс ретпен басып, сөйлем құрастыр.</div><div class="mini-game-options" id="sentenceGrid"></div><div class="game-result" id="sentenceBuilt">Сенің сөйлемің: ...</div>';mixed.forEach(word=>{const b=document.createElement('button');b.className='mini-tile';b.textContent=word;b.onclick=()=>{if(b.disabled||miniDone)return;b.disabled=true;miniPicked.push(word);document.getElementById('sentenceBuilt').textContent='Сенің сөйлемің: '+miniPicked.join(' ');if(miniPicked.length===target.length){miniDone=true;if(miniPicked.join(' ')===target.join(' ')){miniScore++;document.getElementById('miniGameFeedback').textContent='Керемет! Сөйлем дұрыс.'}else document.getElementById('miniGameFeedback').textContent='Дұрыс нұсқа: '+target.join(' ');showMiniNext()}};document.getElementById('sentenceGrid').append(b)})}
+function showMiniNext(){const box=document.getElementById('miniGameActions');box.innerHTML='';const b=document.createElement('button');b.className='next';b.textContent='Келесі →';b.onclick=()=>{miniIndex++;if(miniIndex>=miniTotal())finishMiniGame();else renderMiniGame()};box.append(b)}
+function finishMiniGame(){const key=miniMode+':'+todayKey();let reward=0;if(!gameState.miniWins)gameState.miniWins={};if(!gameState.miniWins[key]){reward=10+miniScore*5;gameState.miniWins[key]=true;dailyStreak();gameState.xp+=reward;gameState.coins+=Math.max(2,Math.floor(miniScore/2));saveGame()}document.getElementById('miniGameCount').textContent='ОЙЫН АЯҚТАЛДЫ';document.getElementById('miniGameProgress').style.width='100%';document.getElementById('miniGameContent').innerHTML='<div class="battle-monster">🏆</div><div class="mini-prompt">Нәтижең: '+miniScore+' / '+miniTotal()+'</div><div class="game-result">⭐ '+(reward?'+'+reward+' XP алдың!':'Бүгінгі сыйлығыңды алдың.')+'<br>🪙 Монеталар қосылды.</div>';document.getElementById('miniGameFeedback').textContent=miniScore===miniTotal()?'Мінсіз нәтиже!':'Жақсы жұмыс! Біліміңді жалғастыр.';document.getElementById('miniGameActions').innerHTML='<button class="next" onclick="closeMiniGame()">Ойындарға оралу</button>'}
+function closeMiniGame(){document.getElementById('miniGameModal').classList.remove('show');document.body.style.overflow=''}
+
 const GAME_KEY='175-kazakh-game-v1';
 const gameState=(()=>{try{return JSON.parse(localStorage.getItem(GAME_KEY))||{xp:0,coins:0,lessons:[],quizDays:[],wordDays:[],streak:0,lastDay:''}}catch(e){return {xp:0,coins:0,lessons:[],quizDays:[],wordDays:[],streak:0,lastDay:''}}})();
 if(!Array.isArray(gameState.lessons))gameState.lessons=[];if(!Array.isArray(gameState.quizDays))gameState.quizDays=[];if(!Array.isArray(gameState.wordDays))gameState.wordDays=[];if(!Number.isFinite(gameState.adventureLevel))gameState.adventureLevel=0;
